@@ -1,0 +1,10 @@
+#!/bin/sh
+
+groupmod --gid ${PGID} squeezeboxserver
+usermod -u ${PUID} -g squeezeboxserver squeezeboxserver
+
+cp -npr /etc/squeezeboxserver.orig/* /etc/squeezeboxserver
+chown -R squeezeboxserver:squeezeboxserver /etc/squeezeboxserver /var/lib/squeezeboxserver /var/log/squeezeboxserver /mnt/Playlists
+
+set -e
+exec "$@"
