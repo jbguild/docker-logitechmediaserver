@@ -18,8 +18,7 @@ RUN echo "Install packages required by Logitech Media Server" \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LC_ALL="C.UTF-8" LANG="en-US.UTF-8" LANGUAGE="en_US.UTF-8"
-RUN echo "Set up locales" \
-  && locale-gen $LANG
+RUN echo "Set up locales" && locale-gen $LANG
 
 ARG LMS_VER="7.9.2"
 RUN echo "Install Logitech Media Server" \
