@@ -29,19 +29,21 @@ RUN echo "Install Logitech Media Server" \
   && apt-get autoremove -qy \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY init /
+
 ENV PUID="1000" PGID="1000"
 RUN echo "Setup directories and start it up" \
   && addgroup --gid ${PGID} squeezeboxserver \
   && usermod -u ${PUID} -g squeezeboxserver squeezeboxserver \
   && mkdir -p /mnt/Music /mnt/Playlists \
   && chown -R squeezeboxserver:squeezeboxserver /etc/squeezeboxserver /var/lib/squeezeboxserver /var/log/squeezeboxserver /mnt/Playlists \
-  && cp -pr /etc/squeezeboxserver /etc/squeezeboxserver.orig
-
+  && cp -pr /etc/squeezeboxserver /etc/squeezeboxserver.orig \
+  && chmod a+x /init
+  
 VOLUME /mnt/Music /mnt/Playlists
 
 EXPOSE 3483 3483/udp 9000 9090
 
-COPY init /
 ENTRYPOINT ["/init"]
 CMD ["/usr/sbin/squeezeboxserver", "--user", "squeezeboxserver", "--prefsdir", "/var/lib/squeezeboxserver", "--logdir", "/var/log/squeezeboxserver", "--cachedir", "/var/lib/squeezeboxserver"]
 
